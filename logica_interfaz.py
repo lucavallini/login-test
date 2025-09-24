@@ -92,9 +92,3 @@ class VentanaRegister(RegisterStyle):
         except Exception as e:
             QMessageBox.critical(self, 'Error', f'Error al registrar: {str(e)}')
 
-if __name__ == '__main__':
-    print("Iniciando app...")  # debug
-    app = QApplication(sys.argv)
-    ventana_log = VentanaLogin()
-    ventana_log.show()
-    sys.exit(app.exec_())
