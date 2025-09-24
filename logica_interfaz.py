@@ -2,7 +2,6 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMessageBox
 from stylesheet import RegisterStyle, LoginStyle
 from conexion import getConexion
-import mysql.connector
 from db_operations import DatabaseManager
 
 # Esto es toda la logica de botones, que hace cada uno, errores
