@@ -2,7 +2,8 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMessageBox
 from stylesheet import RegisterStyle, LoginStyle
 from conexion import getConexion
-import pymysql
+import mysql.connector
+from db_operations import DatabaseManager
 
 # Esto es toda la logica de botones, que hace cada uno, errores
 # Si bien las hay codigo de la conexion de la base de datos, luego debo transferirlas a otro archivo donde esten todos los querys para reutilizar y optmizacion de codigo(modulacion)
@@ -11,6 +12,9 @@ import pymysql
 class VentanaLogin(LoginStyle):
     def __init__(self):
         super().__init__()
+
+        self.conexion = getConexion()
+        self.db_manager = DatabaseManager(self.conexion)
 
         self._register_button.clicked.connect(self.open_register_window)#boton para iniciar registro
         self._login_button.clicked.connect(self.log_attemp)#boton loggin
@@ -21,43 +25,39 @@ class VentanaLogin(LoginStyle):
         password = self._password_input.text().strip()
         if not user or not password:
             QMessageBox.critical(self,'Error','Rellene los campos user y password.')
+            return
         
         self.loguear_user(user, password)
 
     
     def loguear_user(self, user, password):
-        try:
-            conexion = getConexion()
-            cursor = conexion.cursor()
-            login_query = "SELECT id, username FROM usuarios WHERE username = %s AND password = %s"
-            cursor.execute(login_query, (user, password))
-            resultado = cursor.fetchone()
+        try:    
+            resultado = self.db_manager.getLogin(user, password)
             if resultado:
-                user_id ,username = resultado
-                QMessageBox.information(self, 'Éxito', f'Bienvenido {username}!')
-                #ACA SE ABRIRIA UNA VENTANA PRINCIPAL 
+                user_id , user = resultado
+                QMessageBox.information(self, 'Exito', f'Bienvenido {user}')
                 self.close()
-                return True
             else:
-                QMessageBox.critical(self, 'Error', 'Usuario o contraseña incorrecta')
-                return False
-        finally:
-            if cursor:
-                cursor.close()
-            if conexion:
-                conexion.close()
+                QMessageBox.critical(self, 'ERROR', 'Usuario o contraseña incorrecta')
+
+        except Exception as e:
+            QMessageBox.critical(self, 'Error', 'Error en la conexion')
+
 
 
     #APRETAR REGISTER ABRA OTRA VENTANA
     def open_register_window(self):
-        self.reg_window = VentanaRegister()
+        self.reg_window = VentanaRegister(self.db_manager)
         self.reg_window.show()
 
 
 
 class VentanaRegister(RegisterStyle):
-    def __init__(self):
+    def __init__(self, db_manager):
         super().__init__()
+
+        self.db_manager = db_manager
+
 
         self._register_button.clicked.connect(self.register_attempt)#boton para registrar, va a checkear q campos esten completados
 
@@ -80,36 +80,17 @@ class VentanaRegister(RegisterStyle):
 
 
     def create_user(self, user, password):
-        conexion = None
-        cursor = None
-        
         try:
-            conexion = getConexion()
-            cursor = conexion.cursor()
-            
-            # Verificar usuario existente
-            check_query = "SELECT username FROM usuarios WHERE username = %s"
-            cursor.execute(check_query, (user,))
-            resultado = cursor.fetchone()
-            if resultado:
-                QMessageBox.warning(self, 'Error', 'El usuario ya existe')
+            if self.db_manager.getUser(user):
+                QMessageBox.critical(self,'ERROR', 'Usuario ya existe')
                 return
-                
-            # Insertar nuevo usuario
-            query = "INSERT INTO usuarios (username, password) VALUES (%s, %s)"
-            cursor.execute(query, (user, password))
-            conexion.commit()
-            
-            QMessageBox.information(self, 'Éxito', 'Usuario registrado exitosamente')
-            self.close()
-            
 
-            
-        finally:
-            if cursor:
-                cursor.close()
-            if conexion:
-                conexion.close()
+            self.db_manager.setRegister(user, password)
+            QMessageBox.information(self, 'Exito', f'Bienvenido {user}')
+            self.close()
+
+        except Exception as e:
+            QMessageBox.critical(self, 'Error', f'Error al registrar: {str(e)}')
 
 if __name__ == '__main__':
     print("Iniciando app...")  # debug
