@@ -13,8 +13,8 @@ class VentanaLogin(LoginStyle):
     def __init__(self):
         super().__init__()
 
-        self.conexion = getConexion()
-        self.db_manager = DatabaseManager(self.conexion)
+        self.conexion = getConexion()# instanciamos
+        self.db_manager = DatabaseManager(self.conexion) #instanciamos
 
         self._register_button.clicked.connect(self.open_register_window)#boton para iniciar registro
         self._login_button.clicked.connect(self.log_attemp)#boton loggin
@@ -27,14 +27,14 @@ class VentanaLogin(LoginStyle):
             QMessageBox.critical(self,'Error','Rellene los campos user y password.')
             return
         
-        self.loguear_user(user, password)
+        self.loguear_user(user, password) #llamo para loguear con los parametros asignados
 
     
     def loguear_user(self, user, password):
         try:    
-            resultado = self.db_manager.getLogin(user, password)
+            resultado = self.db_manager.getLogin(user, password) #utilizo meotodo para logear y se le asigna a valores a resultado
             if resultado:
-                user_id , user = resultado
+                user_id , user = resultado # resultado es una tuppla con dos valores, los dos valores son asignados a user_id y a user
                 QMessageBox.information(self, 'Exito', f'Bienvenido {user}')
                 self.close()
             else:
@@ -56,12 +56,12 @@ class VentanaRegister(RegisterStyle):
     def __init__(self, db_manager):
         super().__init__()
 
-        self.db_manager = db_manager
+        self.db_manager = db_manager #instanciamos
 
 
         self._register_button.clicked.connect(self.register_attempt)#boton para registrar, va a checkear q campos esten completados
 
-    def register_attempt(self):
+    def register_attempt(self): #intento para registrar, verifica campos llenos y registra
         user = self._user_input_reg.text().strip()
         password = self._password_input_reg.text().strip()
         password_verify = self._password_input_reg_verify.text().strip()
@@ -75,17 +75,17 @@ class VentanaRegister(RegisterStyle):
             QMessageBox.critical(self, 'Error', 'Las contraseñas no son iguales')
             return
 
-        # Si pasa las validaciones, crear usuario
+        # Si pasa las validaciones, crear usuario, pasamos valores 
         self.create_user(user, password)
 
 
     def create_user(self, user, password):
         try:
-            if self.db_manager.getUser(user):
+            if self.db_manager.getUser(user): # modulo getuser, que busca el nombre de usuario que este en el input, si esta es error, no se puede usar el mismo usuario
                 QMessageBox.critical(self,'ERROR', 'Usuario ya existe')
                 return
 
-            self.db_manager.setRegister(user, password)
+            self.db_manager.setRegister(user, password)# si pasa el if, crea usuario
             QMessageBox.information(self, 'Exito', f'Bienvenido {user}')
             self.close()
 

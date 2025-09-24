@@ -3,10 +3,7 @@ from PyQt5.QtCore import Qt
 import sys
 
 
-
 #Ventana de inicio sesion
-
-
 class Ui_Login (QWidget):
     def __init__(self):
         super().__init__()#heredamos de la clase qwidget
