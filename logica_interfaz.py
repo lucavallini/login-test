@@ -6,7 +6,6 @@ import mysql.connector
 from db_operations import DatabaseManager
 
 # Esto es toda la logica de botones, que hace cada uno, errores
-# Si bien las hay codigo de la conexion de la base de datos, luego debo transferirlas a otro archivo donde esten todos los querys para reutilizar y optmizacion de codigo(modulacion)
 # Falta tambien una biblioteca para que las contraseñas esten hasheadas.
 
 class VentanaLogin(LoginStyle):
@@ -86,7 +85,7 @@ class VentanaRegister(RegisterStyle):
                 return
 
             self.db_manager.setRegister(user, password)# si pasa el if, crea usuario
-            QMessageBox.information(self, 'Exito', f'Bienvenido {user}')
+            QMessageBox.information(self, 'Exito', f'¡Gracias por registrartre! Bienvenido a la comunidad {user}')
             self.close()
 
         except Exception as e:
