@@ -1,6 +1,8 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QGridLayout, QPushButton
 from PyQt5.QtCore import Qt
 import sys
+import main
+
 
 
 #Ventana de inicio sesion
