@@ -1,8 +1,10 @@
 from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont ,QIcon
-from interfaz import Ui_Login,  Ui_Register
+from Assets.interfaz import Ui_Login,  Ui_Register
 import sys
+import os
+
 
 # Stylesheet de los dos widget (falta agregar una ventana principal)
 # Todos los colores en hex, siguiendo palte de colores negro, blanco, azul
@@ -22,7 +24,7 @@ class LoginStyle(Ui_Login):
         
         self._title.setStyleSheet("font-size: 46px; font-weight: bold; color: white;")
 
-        self.setWindowIcon(QIcon('icon.png'))
+        self.setWindowIcon(QIcon('Assets/icons/icon.png'))
 
         self.setStyleSheet(''' 
         QWidget{
@@ -79,7 +81,7 @@ class RegisterStyle(Ui_Register):
 
         self._title_reg.setStyleSheet("font-size: 46px; font-weight: bold; color: white;")
         
-        self.setWindowIcon(QIcon('icon.png'))
+        self.setWindowIcon(QIcon('Assets/icons/icon.png'))
 
         self.setStyleSheet(''' 
         QWidget{

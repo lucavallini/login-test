@@ -1,8 +1,8 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMessageBox
-from stylesheet import RegisterStyle, LoginStyle
-from conexion import getConexion
-from db_operations import DatabaseManager
+from Assets.stylesheet import RegisterStyle, LoginStyle
+from database.conexion import getConexion
+from database.db_operations import DatabaseManager
 
 # Esto es toda la logica de botones, que hace cada uno, errores
 # Falta tambien una biblioteca para que las contraseñas esten hasheadas.

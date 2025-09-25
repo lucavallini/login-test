@@ -1,7 +1,7 @@
 import mysql.connector 
 import os
 
-with open ('passwordBDD.txt', 'r') as archivo: #abro el archivo que tiene mi contraseña
+with open ('other/passwordBDD.txt', 'r') as archivo: #abro el archivo que tiene mi contraseña
     password = archivo.read()
 
 def getConexion():#Conexion a la base de datos.

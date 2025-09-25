@@ -1,4 +1,4 @@
-from logica_interfaz import *
+from modules.logica_interfaz import *
 from PyQt5.QtWidgets import QApplication
 
 def main():
