@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMessageBox
+from PyQt5.QtWidgets import QMessageBox
 from Assets.stylesheet import RegisterStyle, LoginStyle
 from database.conexion import getConexion
 from database.db_operations import DatabaseManager
@@ -51,7 +51,7 @@ class VentanaLogin(LoginStyle):
 
 
 class VentanaRegister(RegisterStyle):
-    def __init__(self, db_manager):
+    def __init__(self, db_manager): #hereda la la instancia de db_manager
         super().__init__()
 
         self.db_manager = db_manager #instanciamos
@@ -63,10 +63,15 @@ class VentanaRegister(RegisterStyle):
         user = self._user_input_reg.text().strip()
         password = self._password_input_reg.text().strip()
         password_verify = self._password_input_reg_verify.text().strip()
+        tamanio_clave = len(password)
 
         # Validaciones
         if not user or not password or not password_verify:
             QMessageBox.critical(self, 'Error', 'Rellene los campos y vuelva a intentar')
+            return
+        
+        if tamanio_clave < 6:
+            QMessageBox.critical(self, 'Error', 'La contraseña debe tener al menos 6 caracteres')
             return
 
         if password != password_verify:
