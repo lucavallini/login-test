@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont ,QIcon
-from Assets.ui_register import Ui_Register
-from Assets.ui_login import Ui_Login
+from Assets.windows.widget_register import uiRegister
+from Assets.windows.widget_login import uiLogin
 import sys
 import os
 
@@ -10,7 +10,7 @@ import os
 # Stylesheet de los dos widget (falta agregar una ventana principal)
 # Todos los colores en hex, siguiendo palte de colores negro, blanco, azul
 
-class LoginStyle(Ui_Login):
+class loginStyle(uiLogin):
     def __init__(self):
         super().__init__()
 
@@ -63,7 +63,7 @@ class LoginStyle(Ui_Login):
 
 
 
-class RegisterStyle(Ui_Register):
+class registerStyle(uiRegister):
     def __init__(self):
         super().__init__()
 

@@ -1,13 +1,13 @@
 import sys
 from PyQt5.QtWidgets import QMessageBox
-from Assets.stylesheet import RegisterStyle, LoginStyle
+from Assets.styles.stylesheet import registerStyle, loginStyle
 from database.conexion import getConexion
 from database.db_operations import DatabaseManager
 
 # Esto es toda la logica de botones, que hace cada uno, errores
 # Falta tambien una biblioteca para que las contraseñas esten hasheadas.
 
-class VentanaLogin(LoginStyle):
+class ventanaLogin(loginStyle):
     def __init__(self):
         super().__init__()
 
@@ -33,7 +33,7 @@ class VentanaLogin(LoginStyle):
             resultado = self.db_manager.getLogin(user, password) #utilizo meotodo para logear y se le asigna a valores a resultado
             if resultado:
                 user_id , user = resultado # resultado es una tuppla con dos valores, los dos valores son asignados a user_id y a user
-                QMessageBox.information(self, 'Exito', f'Bienvenido {user}')
+                QMessageBox.information(self, 'Exito', f'¡Bienvenido de nuevo {user}!')
                 self.close()
             else:
                 QMessageBox.critical(self, 'ERROR', 'Usuario o contraseña incorrecta')
@@ -45,12 +45,12 @@ class VentanaLogin(LoginStyle):
 
     #APRETAR REGISTER ABRA OTRA VENTANA
     def open_register_window(self):
-        self.reg_window = VentanaRegister(self.db_manager)
+        self.reg_window = ventanaRegister(self.db_manager)
         self.reg_window.show()
 
 
 
-class VentanaRegister(RegisterStyle):
+class ventanaRegister(registerStyle):
     def __init__(self, db_manager): #hereda la la instancia de db_manager
         super().__init__()
 
@@ -89,7 +89,7 @@ class VentanaRegister(RegisterStyle):
                 return
 
             self.db_manager.setRegister(user, password)# si pasa el if, crea usuario
-            QMessageBox.information(self, 'Exito', f'¡Gracias por registrartre! Bienvenido a la comunidad {user}')
+            QMessageBox.information(self, 'Exito', f'¡Gracias por registrarte! Bienvenido a la comunidad {user}!')
             self.close()
 
         except Exception as e:

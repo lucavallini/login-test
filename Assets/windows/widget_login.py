@@ -1,10 +1,10 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QGridLayout, QPushButton
+from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QGridLayout, QPushButton
 from PyQt5.QtCore import Qt
 import sys
 
 
 #Ventana de inicio sesion
-class Ui_Login (QWidget):
+class uiLogin (QWidget):
     def __init__(self):
         super().__init__()#heredamos de la clase qwidget
         self.setWindowTitle('Inicio sesión')

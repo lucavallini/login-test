@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QGridLayout, QPushButton
 import sys
 
 #Ventana de registro
-class Ui_Register(QWidget):
+class uiRegister(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('Register')
