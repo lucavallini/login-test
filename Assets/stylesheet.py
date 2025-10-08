@@ -1,7 +1,8 @@
 from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont ,QIcon
-from Assets.interfaz import Ui_Login,  Ui_Register
+from Assets.ui_register import Ui_Register
+from Assets.ui_login import Ui_Login
 import sys
 import os
 
