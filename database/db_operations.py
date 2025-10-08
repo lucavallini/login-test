@@ -7,6 +7,17 @@ class DatabaseManager:
         self.conexion = conexion
         self.cursor = conexion.cursor() #cursor busca lleva y trae
 
+    def createTable(self):  # metodo para crear tabla si es q no existe
+        query = '''
+        CREATE TABLE IF NOT EXISTS usuarios (
+            id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            username VARCHAR(50) NOT NULL UNIQUE,
+            password VARCHAR(255) NOT NULL
+        )
+        ''' #query para pasar a mysql
+        self.cursor.execute(query) #ejecuta la query
+        self.conexion.commit() #enviar query
+
     def setRegister(self, user, password):  # metodo para REGISTRAR
         query = 'INSERT INTO usuarios (username, password) VALUES (%s, %s)' #query para pasar a mysql
         self.cursor.execute(query, (user, password)) #ejecuta cla query, con los valores user y password
