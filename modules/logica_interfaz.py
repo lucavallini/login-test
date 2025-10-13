@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QMessageBox
-from Assets.styles.stylesheet import registerStyle, loginStyle
+from Assets.styles.stylesheet import registerStyle, loginStyle, mainWindowStyle
 from database.conexion import getConexion
 from database.db_operations import DatabaseManager
 
@@ -35,13 +35,15 @@ class ventanaLogin(loginStyle):
                 user_id , user = resultado # resultado es una tuppla con dos valores, los dos valores son asignados a user_id y a user
                 QMessageBox.information(self, 'Exito', f'¡Bienvenido de nuevo {user}!')
                 self.close()
+                self.main_window = ventanaMain(self.db_manager, user) #le paso los parametros a la ventana principal
+                self.main_window.show()
             else:
                 QMessageBox.critical(self, 'ERROR', 'Usuario o contraseña incorrecta')
-
+            
+        
         except Exception as e:
             QMessageBox.critical(self, 'Error', 'Error en la conexion')
-
-
+        
 
     #APRETAR REGISTER ABRA OTRA VENTANA
     def open_register_window(self):
@@ -95,3 +97,20 @@ class ventanaRegister(registerStyle):
         except Exception as e:
             QMessageBox.critical(self, 'Error', f'Error al registrar: {str(e)}')
 
+
+
+class ventanaMain(mainWindowStyle): #ventana principal, despues de loguearse
+    def __init__(self, db_manager, user): #hereda la instancia de db_manager
+        super().__init__()
+
+        self.db_manager = db_manager
+        self.user = user 
+
+        self._user_button.clicked.connect(self.show_user_info) #boton para ver info del user
+
+    def show_user_info(self):
+        resultado = self.db_manager.getUser(self.user)
+        
+        if resultado:
+            username = resultado[0]  # Extraer el primer elemento de la tupla
+            QMessageBox.information(self, 'Datos del usuario', f'Usuario: {username}')
