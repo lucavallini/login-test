@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import QLineEdit ,QApplication
+from PyQt5.QtWidgets import QLineEdit ,QApplication, QLabel, QSizePolicy, QMessageBox
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont ,QIcon
+from PyQt5.QtGui import QFont ,QIcon , QMovie
 from Assets.windows.widget_register import uiRegister
 from Assets.windows.widget_login import uiLogin
 from Assets.windows.main_window import uiMainWindow
@@ -120,7 +120,10 @@ class registerStyle(uiRegister):
         ''')
 
 
-
+#stylesheet de la ventana principal
+#Uso gif como pantalla de inicio, lo primero q ve el usuario, gif sacado de inet
+#tenemos el icono de la app, q lo usaremos de logo
+#el fondo de la ventana es azul ()
 
 class mainWindowStyle(uiMainWindow):
     def __init__(self):
@@ -128,11 +131,21 @@ class mainWindowStyle(uiMainWindow):
 
         self._fav_label.setAlignment(Qt.AlignLeft)
 
+        self._gif_label = QLabel()
+
+        gif = QMovie('Assets/gifs/stern_hub.gif')
+        self._gif_label.setMovie(gif)
+        self._gif_label.setAlignment(Qt.AlignCenter)
+        self._gif_label.setScaledContents(True)
+        gif.start()
+
+        self.content_layout.addWidget(self._gif_label)
+
         self.setWindowIcon(QIcon('Assets/icons/main_icon.png'))
 
         self.setStyleSheet('''
         QMainWindow{
-            background-color: #000000;
+            background-color: #0D1333;
         }
 
         QPushButton{
@@ -169,13 +182,3 @@ class mainWindowStyle(uiMainWindow):
         font-size: 16px;
         }
         ''')
-        
-
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    main_window = mainWindowStyle()
-    main_window.show()
-    sys.exit(app.exec_())
-        

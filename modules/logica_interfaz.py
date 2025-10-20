@@ -1,8 +1,9 @@
 import sys
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMessageBox, QTextEdit
 from Assets.styles.stylesheet import registerStyle, loginStyle, mainWindowStyle
 from database.conexion import getConexion
 from database.db_operations import DatabaseManager
+from api.nasa_api import nasaApi
 
 # Esto es toda la logica de botones, que hace cada uno, errores
 # Falta tambien una biblioteca para que las contraseñas esten hasheadas.
@@ -104,13 +105,34 @@ class ventanaMain(mainWindowStyle): #ventana principal, despues de loguearse
         super().__init__()
 
         self.db_manager = db_manager
-        self.user = user 
+        self.user = user
+        self.api = nasaApi() #instancia de la api de nasa
+        
 
         self._user_button.clicked.connect(self.show_user_info) #boton para ver info del user
 
+
+
+    def setText(self, text):
+        if not hasattr(self, "api_text"):
+            self.api_text = QTextEdit()
+            self.api_text.setReadOnly(True)
+            self.content_layout.addWidget(self.api_text)
+        self.api_text.setText(text)
+
+
+
     def show_user_info(self):
-        resultado = self.db_manager.getUser(self.user)
+        resultado = self.db_manager.getUser(self.user) #uso el metodo para obtner el nombre de usuario, y lo devuelve en una tuppla
         
         if resultado:
-            username = resultado[0]  # Extraer el primer elemento de la tupla
+            username = resultado[0] #la tupla q nos devuelve getuser, agarramos el primer valor(user)
             QMessageBox.information(self, 'Datos del usuario', f'Usuario: {username}')
+    
+
+
+    def setClear_area(self):#metodo para limpiar el area del contenido
+        while self.content_layout.count():
+            child = self.content_layout.takeAt(0)
+            if child.widget():
+                child.widget().deleteLater()
