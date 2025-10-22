@@ -49,19 +49,6 @@ class nasaApi:
             return False
         
     
-    def getRover_info(self, rover= 'curiosity'): #para obtener info del rover curiosity
-        endpoint = f'{self._url}/mars-photos/api/v1/rovers/{rover}'
-        params = {'api_key': self._api_key}
-
-        try:
-            response = requests.get(endpoint, params=params)
-            response.raise_for_status()
-            if response.status_code == 200:
-                return response.json()
-            else:
-                return False
-        except requests.exceptions.RequestException:
-            return False
 
 
     #asteroides q pasan cerca de la tierra, se saca con un rango de fecha
@@ -117,5 +104,3 @@ class nasaApi:
                 return False
         except requests.exceptions.RequestException:
             return False
-
-

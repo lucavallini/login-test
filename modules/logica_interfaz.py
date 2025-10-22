@@ -1,5 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QMessageBox, QTextEdit
+import requests
 from Assets.styles.stylesheet import registerStyle, loginStyle, mainWindowStyle
 from database.conexion import getConexion
 from database.db_operations import DatabaseManager
@@ -108,10 +109,55 @@ class ventanaMain(mainWindowStyle): #ventana principal, despues de loguearse
         self.user = user
         self.api = nasaApi() #instancia de la api de nasa
         
+        self.test()
 
         self._user_button.clicked.connect(self.show_user_info) #boton para ver info del user
 
 
+        #acciones de los botones del menu
+        self.apod_content_action.triggered.connect(self.load_apod_content) #accion para ver contenido apod
+        self.apod_about_action.triggered.connect(self.show_apod_info) #accion para ver info apod
+
+
+        self.mars_content_action.triggered.connect(self.load_mars_content) #accion para ver contenido mars
+        self.mars_about_action.triggered.connect(self.show_mars_info) #accion para ver
+
+
+        self.neo_content_action.triggered.connect(self.load_neo_content) #accion para ver contenido neo
+        self.neo_about_action.triggered.connect(self.show_neo_info) #accion para ver info neo
+
+
+        self.notes_content_action.triggered.connect(self.load_notes_content) #accion para ver contenido notes
+        self.notes_about_action.triggered.connect(self.show_notes_info) #accion para ver info notes
+
+
+    def load_apod_content(self):
+        pass
+
+    def show_apod_info(self):
+        QMessageBox.information(self, '¿Qué es APOD?', 'APOD (Astronomy Picture Of the Day) es un servicio de la NASA que publica diariamente desde 1995 una imagen o fotografía diferente del universo, con una breve explicación escrita por profesionales de la NASA. Incluye fotos de galaxias, nebulosas, planetas, eventos astronomicos y fenomenos cósmicos. Todo es con un fin educativo.')
+        return
+
+    def load_mars_content(self):
+        pass
+
+    def show_mars_info(self):
+        QMessageBox.information(self, '¿Qué es Mars Rover Photos?', 'Mars Rover Photos es un servicio de la Nasa en la que se accede a fotografias tomadas por rovers(vehículos exploradores) que estuvieron o estan en Marte. Tienen diferentes rovers (en este caso Curiosity porque es el mas conocido activo en el momento). Todo es con un fin educativo para conocer mas sobre Marte y sus características.')
+        return
+
+    def load_neo_content(self):
+        pass
+
+    def show_neo_info(self):
+        QMessageBox.information(self, '¿Qué es NEO?', 'NEO (Near Earth Objetcs) es un servicio de la NASA en la que accedemos informacion de los objetos cercanos a la Tierra, como asteroides y cometas. Los clasifica en potencialmente peligrosos o no peligrosos, también segun su tamaño. Todo es con un fin educativo para conocer mas sobre lo que sucede en la órbita terrestre.')
+        return
+
+    def load_notes_content(self):
+        pass
+
+    def show_notes_info(self):
+        QMessageBox.information(self, '¿Qué es Notes?', 'Notes sirve para que el usuario tome notas de cosas de su interes, sobre el servicio que desee, esto se guardara y cada vez que entre con su usuario podra ver sus anotaciones y manipularlas a su gusto.')
+        return
 
     def setText(self, text):
         if not hasattr(self, "api_text"):
@@ -136,3 +182,31 @@ class ventanaMain(mainWindowStyle): #ventana principal, despues de loguearse
             child = self.content_layout.takeAt(0)
             if child.widget():
                 child.widget().deleteLater()
+    
+
+    def test(self):
+        print("=== DEBUGGING ===\n")
+        
+        # Debug APOD
+        print("1. Debug APOD...")
+        try:
+            url = f'{self.api._url}/planetary/apod'
+            params = {'api_key': self.api._api_key}
+            response = requests.get(url, params=params)
+            print(f"Status code: {response.status_code}")
+            print(f"Response: {response.text[:200]}")
+        except Exception as e:
+            print(f"Error: {e}")
+        
+        print("\n" + "="*50 + "\n")
+        
+        # Debug Mars
+        print("2. Debug Mars Photos...")
+        try:
+            url = f'{self.api._url}/mars-photos/api/v1/rovers/curiosity/photos'
+            params = {'api_key': self.api._api_key, 'sol': 1000}
+            response = requests.get(url, params=params)
+            print(f"Status code: {response.status_code}")
+            print(f"Response: {response.text[:200]}")
+        except Exception as e:
+            print(f"Error: {e}")
