@@ -6,7 +6,7 @@ from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 import sys
 import json
-from api.nasa_api import nasaApi  # Asegúrate de que la ruta sea correcta
+from api.world_bank_api import nasaApi  # Asegúrate de que la ruta sea correcta
 
 class NASAImageWidget(QWidget):
     def __init__(self, nasa_api):

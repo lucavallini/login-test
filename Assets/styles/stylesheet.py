@@ -1,11 +1,13 @@
-from PyQt5.QtWidgets import QLineEdit ,QApplication, QLabel, QSizePolicy, QMessageBox
+from PyQt5.QtWidgets import QLineEdit ,QApplication, QLabel, QSizePolicy, QMessageBox, QMainWindow
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont ,QIcon , QMovie
+from PyQt5 import QtWidgets
 from Assets.windows.widget_register import uiRegister
 from Assets.windows.widget_login import uiLogin
-from Assets.windows.main_window import uiMainWindow
+from Assets.windows.main_window import uiWert
 import sys
 import os
+
 
 
 # Stylesheet de los dos widget (falta agregar una ventana principal)
@@ -24,28 +26,28 @@ class loginStyle(uiLogin):
         self._password_input.setAlignment(Qt.AlignCenter)
         self._password_input.setEchoMode(QLineEdit.Password)
         
-        self._title.setStyleSheet("font-size: 46px; font-weight: bold; color: white;")
+        self._title.setStyleSheet("font-size: 46px; font-weight: bold; color: #1A3300;")
 
         self.setWindowIcon(QIcon('Assets/icons/icon.png'))
 
         self.setStyleSheet(''' 
         QWidget{
-            background-color: #000000;
+            background-color: #ffffff;
         }
         
         
         QLabel{
-            color : #ffffff;
+            color : #1A3300;
             font-weight: bold;
             font-size: 16px;
             margin:10px;
             padding:15px;
         }
         QPushButton{
-            background-color:#ffffff;
-            border: 2px solid #ffffff;
+            background-color:#1A3300;
+            border: 2px solid #1A3300;
             border-radius : 16px;        
-            color : #000000;
+            color : #ffffff;
             font-weight : bold;
             font-size: 14px;
             margin:10px;
@@ -53,9 +55,9 @@ class loginStyle(uiLogin):
         }
         
         QLineEdit{
-        border: 2px solid #1d9bf0;
+        border: 2px solid #1A3300;
         border-radius : 8px;
-        color : #ffffff;
+        color : #000000;
         margin:10px;
         padding:15px;
         }
@@ -81,28 +83,28 @@ class registerStyle(uiRegister):
         self._password_input_reg_verify.setAlignment(Qt.AlignCenter)
         self._password_input_reg_verify.setEchoMode(QLineEdit.Password)
 
-        self._title_reg.setStyleSheet("font-size: 46px; font-weight: bold; color: white;")
+        self._title_reg.setStyleSheet("font-size: 46px; font-weight: bold; color: #1A3300;")
         
         self.setWindowIcon(QIcon('Assets/icons/icon.png'))
 
         self.setStyleSheet(''' 
         QWidget{
-            background-color: #000000;
+            background-color: #fffffff;
         }
         
         
         QLabel{
-            color : #ffffff;
+            color : #1A3300;
             font-weight: bold;
             font-size: 16px;
             margin:10px;
             padding:15px;
         }
         QPushButton{
-            background-color:#ffffff;
-            border: 2px solid #ffffff;
+            background-color:#1A3300;
+            border: 2px solid #1A3300;
             border-radius : 16px;        
-            color : #000000;
+            color : #ffffff;
             font-weight : bold;
             font-size: 14px;
             margin:10px;
@@ -110,9 +112,9 @@ class registerStyle(uiRegister):
         }
         
         QLineEdit{
-        border: 2px solid #1d9bf0;
+        border: 2px solid #1A3300;
         border-radius : 8px;
-        color : #ffffff;
+        color : #000000;
         margin:10px;
         padding:15px;
         }
@@ -120,65 +122,38 @@ class registerStyle(uiRegister):
         ''')
 
 
-#stylesheet de la ventana principal
-#Uso gif como pantalla de inicio, lo primero q ve el usuario, gif sacado de inet
-#tenemos el icono de la app, q lo usaremos de logo
-#el fondo de la ventana es azul ()
 
-class mainWindowStyle(uiMainWindow):
+class mainWindowStyle(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self._fav_label.setAlignment(Qt.AlignLeft)
-
-        self._gif_label = QLabel()
-
-        gif = QMovie('Assets/gifs/stern_hub.gif')
-        self._gif_label.setMovie(gif)
-        self._gif_label.setAlignment(Qt.AlignCenter)
-        self._gif_label.setScaledContents(True)
-        gif.start()
-
-        self.content_layout.addWidget(self._gif_label)
-
-        self.setWindowIcon(QIcon('Assets/icons/main_icon.png'))
+        
+        # Crear instancia de la UI generada
+        self.ui = uiWert()
+        self.ui.setupUi(self)  # Configurar la UI en esta ventana
+        
+        # Establecer ícono
+        self.setWindowIcon(QIcon('Assets/icons/main_wert_icon.png'))
 
         self.setStyleSheet('''
-        QMainWindow{
-            background-color: #0D1333;
-        }
-
-        QPushButton{
-        background-color:#1d9bf0;
-        border: 2px solid #1d9bf0;
-        border-radius : 16px;        
-        color : #ffffff;
-        font-weight : bold;
-        font-size: 14px;
-        margin:10px;
-        padding:15px;
-        }
-        
-        QLineEdit{
-        border: 2px solid #1d9bf0;
-        border-radius : 8px;
-        color : #ffffff;
-        margin:10px;
-        padding:15px;
-        }
-
-        QLabel{
-        color : #ffffff;
-        font-weight: bold;
-        font-size: 16px;
-        margin:10px;
-        padding:15px;
-        }
-
         QMessageBox{
-        background-color: #000000;
-        color: #ffffff;
-        font-weight: bold;
-        font-size: 16px;
+            background-color:#ffffff;
+            border-radius : 16px;        
+            color : #1a3300;
+            font-weight : bold;
+            font-size: 14px;
+            margin:10px;
+            padding:15px;
+        }
+
+        QMessageBox QPushButton{
+            background-color:#1A3300;
+            border: 2px solid #1A3300;
+            border-radius : 16px;        
+            color : #ffffff;
+            font-weight : bold;
+            font-size: 14px;
+            margin:10px;
+            padding:15px;
         }
         ''')

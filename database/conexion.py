@@ -22,6 +22,33 @@ def createTable(self):  # metodo para crear tabla si es q no existe
     except mysql.connector.Error as err:
         print(f"Error: {err}")
 
+def createNoteTable(self):  # metodo para crear tabla de notas si es q no existe
+    try:
+        conexion = getConexion()
+        cursor = conexion.cursor()
+        query = '''
+        CREATE TABLE IF NOT EXISTS notas (
+            id_nota INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            titulo VARCHAR(45) NOT NULL,
+            nota VARCHAR(500),
+            id INT, 
+            FOREIGN KEY (id) REFERENCES usuarios(id)
+        )
+        '''
+        cursor.execute(query)
+        conexion.commit()
+        cursor.close()
+        conexion.close()
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+
+def setTables():
+    try:
+        createTable(None)
+        createNoteTable(None)
+    except mysql.connector.Error as err:
+        print(f"ver consulta esta mal: {err}")
+
 def getConexion():#Conexion a la base de datos.
     conexion= mysql.connector.connect(
         user= 'root',
