@@ -1,11 +1,9 @@
-import sys
-from PyQt5.QtWidgets import QMessageBox, QTextEdit
-import requests
-from Assets.styles.stylesheet import registerStyle, loginStyle, mainWindowStyle
+from PyQt5.QtWidgets import QMessageBox
+from Assets.styles.stylesheet import mainWindowStyle
 from database.conexion import getConexion
 from database.db_operations import DatabaseManager
 from api.world_bank_api import WorldBankAPI
-from api.currency_api import RateAPi
+from api.change_api import ChangeAPi
 
 class ventanaMain(mainWindowStyle): #ventana principal, despues de loguearse
     def __init__(self, db_manager, user): #hereda la instancia de db_manager
@@ -17,11 +15,13 @@ class ventanaMain(mainWindowStyle): #ventana principal, despues de loguearse
         self.user = user
         self.id = self.db_manager.getId(user)[0]  # Obtener el ID del usuario actual
         self.apiwb = WorldBankAPI()  # Instancia de la clase WorldBankAPI
+        self.apichange = ChangeAPi()
         
 
         self.get_note_titles()  # Cargar los títulos de las notas al iniciar la ventana principal
         self.get_countries_names()  # Cargar los nombres de los países al iniciar la ventana principal
         self.get_indicators_names()
+        self.get_all_monedas()
 
 
         # configuracion de botones del menu
@@ -49,7 +49,31 @@ class ventanaMain(mainWindowStyle): #ventana principal, despues de loguearse
         return
     
     def show_convert_currency(self):
-        pass
+        moneda = self.ui.moneda_combo_box.currentData()
+        monto = self.ui.monto_input.text()
+        cambio = self.ui.cambio_combo_box.currentData()
+        self.check_moneda(moneda, cambio)
+
+        cambio_dia = self.apichange.get_rate(moneda, cambio)
+
+        if cambio_dia and monto:
+            conversion = float(monto)* cambio_dia
+            self.ui.conversion_text.setText(f'{conversion:.2f}')
+
+        return moneda , cambio
+
+
+    
+    def check_moneda(self, moneda, cambio):
+        if moneda == cambio:
+            QMessageBox.critical(self,'Error','No puedes hacer el cambio de la misma moneda')
+
+    def get_all_monedas(self):
+        monedas = self.apichange.get_monedas()
+        if monedas:
+            for cod, moneda in monedas.items():
+                self.ui.moneda_combo_box.addItem(f'{moneda}', cod)
+                self.ui.cambio_combo_box.addItem(f'{moneda}', cod)
     
     def get_countries_names(self):
         paises = self.apiwb.get_countries()
@@ -84,10 +108,8 @@ class ventanaMain(mainWindowStyle): #ventana principal, despues de loguearse
     def save_note(self):
         titulo = self.ui.titulo_nota_input.text()
         nota = self.ui.nota_input.toPlainText()
-        if not titulo or not nota:
-            QMessageBox.critical(self, 'Error', 'Rellene los campos de titulo y nota antes de guardar.')
+        if not self.check_content(titulo, nota):
             return
-        
         else:
             try:
                 self.db_manager.setNote(self.id, titulo, nota)
@@ -96,6 +118,13 @@ class ventanaMain(mainWindowStyle): #ventana principal, despues de loguearse
                 self.get_note_titles()  # Actualizar la lista de títulos después de guardar una nota
             except Exception as e:
                 QMessageBox.critical(self, 'Error', f'Error al guardar la nota: {str(e)}')
+            return titulo, nota
+
+    def check_content(self, titulo, nota):
+        if not titulo or not nota:
+            QMessageBox.critical(self, 'Error', 'Rellene los campos de titulo y nota antes de guardar.')
+            return False
+        return True
 
     def delete_note(self):
         titulo = self.ui.notas_combo.currentText()

@@ -52,7 +52,7 @@ class WorldBankAPI:
             "NY.GDP.PCAP.CD": "PIB por persona (US$)",
             "FP.CPI.TOTL.ZG": "Inflación anual (%)",
             "SL.UEM.TOTL.ZS": "Desempleo (%)",
-            "SE.PRM.ENRR": "Niños en escuela primaria (%)",
+            "SE.SEC.NENR": "Matriculación secundaria neta (%)",
             "EG.ELC.ACCS.ZS": "Acceso a electricidad (%)",
             "SH.H2O.SMDW.ZS": "Acceso a agua potable (%)",
             "IT.NET.USER.ZS": "Usuarios de Internet (%)",
@@ -69,6 +69,7 @@ class WorldBankAPI:
         for item in datos[1]:  # datos[1] tiene la lista de años
             año = item['date']
             valor = item['value']
+
             if valor and valor > 1000:
                 texto += f"{año}: US${valor:,.0f}  \n"  # 1,000,000 niños
             
@@ -76,6 +77,6 @@ class WorldBankAPI:
                 texto += f'{año}: Dato no disponible \n'
 
             else:
-                texto += f"{año}: {valor} %\n"
+                texto += f"{año}: {valor:.2f} %\n"
 
         return texto

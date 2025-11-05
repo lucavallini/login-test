@@ -1,7 +1,5 @@
-import sys
-from PyQt5.QtWidgets import QMessageBox, QTextEdit
-import requests
-from Assets.styles.stylesheet import registerStyle, loginStyle, mainWindowStyle
+from PyQt5.QtWidgets import QMessageBox
+from Assets.styles.stylesheet import registerStyle
 from database.conexion import getConexion
 from database.db_operations import DatabaseManager
 

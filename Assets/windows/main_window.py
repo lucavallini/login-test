@@ -468,7 +468,6 @@ class uiWert(object):
         self.monto_input.setPlaceholderText(_translate("Wert", "100.00"))
         self.convertir_button.setText(_translate("Wert", "-->"))
         self.conversion_text.setPlaceholderText(_translate("Wert", "0.00"))
-        self.info_label.setText(_translate("Wert", "Consulta tasas de cambio en tiempo real con Wert. Obtene valores actualizados de mas X monedas, incluyendo USD, EUR, ARS y más. Conversiones precisas basadas en el mercado forex para tus operaciones internacionales."))
         self.textEdit.setPlaceholderText(_translate("Wert", "Más detalles sobre la conversión aparecerán aquí..."))
         self.economic_tittle.setText(_translate("Wert", "Datos Economicos por País"))
         self.datos_group.setTitle(_translate("Wert", "Seleccione los datos"))

@@ -135,6 +135,14 @@ class mainWindowStyle(QMainWindow):
         # Establecer ícono
         self.setWindowIcon(QIcon('Assets/icons/main_wert_icon.png'))
 
+        self.ui.textEdit.setText("""CONVERSOR DE MONEDAS WERT
+                                 
+        - Consulta el cambio en tiempo real
+        - Las 30 monedas principales en el mundo
+        - Seleccione las monedas y el monto a convertir
+        """)
+        self.ui.textEdit.setAlignment(Qt.AlignCenter)
+
         self.setStyleSheet('''
         QMessageBox{
             background-color:#ffffff;
